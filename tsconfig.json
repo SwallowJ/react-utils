@@ -1,8 +1,10 @@
 {
 	"compilerOptions": {
-        "jsx": "react",
+		"declaration": true,
+		"isolatedModules": true,
+		"jsx": "react",
 		"experimentalDecorators": true,
-		"target": "es5",
+		"target": "es6",
 		"module": "commonjs",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"baseUrl": ".",
@@ -24,6 +26,6 @@
 			"@lib/*": ["lib/*"]
 		}
 	},
-	"include": ["src", "lib/model", "test"],
+	"include": ["lib", "es","test"],
 	"exclude": ["node_modules/**"]
 }

@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 import * as path from "path";
 import * as crypto from "crypto";
 import { modelConfigType } from "./typing";
@@ -63,10 +63,10 @@ const load = (params?: modelConfigType) => {
 	const models = [...__scanModel([pages], /model\.[tj]sx?$/), ...__scanModel(customes)];
 
 	const writeStream = createWriteStream(output);
-	const time = dayjs().add(8, "h").format("YYYY-MM-DD HH:mm:ss.SSS");
+	// const time = dayjs().add(8, "h").format("YYYY-MM-DD HH:mm:ss.SSS");
 
 	writeStream.write("/**\n");
-	writeStream.write(` * Date       ${time}\n`);
+	// writeStream.write(` * Date       ${time}\n`);
 	writeStream.write(` * Desc       model加载\n`);
 	writeStream.write(" */\n\n");
 

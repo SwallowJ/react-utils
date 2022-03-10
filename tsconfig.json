@@ -1,0 +1,29 @@
+{
+	"compilerOptions": {
+        "jsx": "react",
+		"experimentalDecorators": true,
+		"target": "es5",
+		"module": "commonjs",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"baseUrl": ".",
+		"allowJs": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"strict": false,
+		"forceConsistentCasingInFileNames": true,
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"noEmit": true,
+		"skipDefaultLibCheck": true,
+		"noUnusedLocals": false,
+		"suppressImplicitAnyIndexErrors": true,
+		"noImplicitThis": false,
+		"downlevelIteration": true,
+		"paths": {
+			"@lib/*": ["lib/*"]
+		}
+	},
+	"include": ["src", "lib/model", "test"],
+	"exclude": ["node_modules/**"]
+}

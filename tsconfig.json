@@ -8,7 +8,7 @@
 		"module": "commonjs",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"baseUrl": ".",
-		"allowJs": true,
+		"allowJs": false,
 		"skipLibCheck": true,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
@@ -23,9 +23,9 @@
 		"noImplicitThis": false,
 		"downlevelIteration": true,
 		"paths": {
-			"@lib/*": ["lib/*"]
+			"@lib/*": ["src/*"]
 		}
 	},
-	"include": ["lib", "es","test"],
+	"include": ["src", "script"],
 	"exclude": ["node_modules/**"]
 }

@@ -1,9 +1,12 @@
 import * as fs from "fs";
-// import dayjs from "dayjs";
+import dayjs from "dayjs";
 import * as path from "path";
 import * as crypto from "crypto";
+import Logger from "@swallowj/logjs";
 import { modelConfigType } from "./typing";
 import { createWriteStream } from "../utils";
+
+const logger = Logger.New({ name: "model" });
 
 const defaultpath = (p: string) => path.resolve(process.cwd(), "src", p);
 
@@ -23,6 +26,7 @@ const __Reg_Model = /(namespace)(\S|\s)*(state:)(\S|\s)*(effects:)(\S|\s)*(reduc
 const test_model = (content: string) => __Reg_Model.test(content);
 
 const __scanModel = (stack: string[], nameReg?: RegExp): string[] => {
+	logger.Info(`开始扫描目录列表: ${stack}`);
 	const res: string[] = [];
 	while (stack.length > 0) {
 		const dir = stack.shift();
@@ -63,10 +67,10 @@ const load = (params?: modelConfigType) => {
 	const models = [...__scanModel([pages], /model\.[tj]sx?$/), ...__scanModel(customes)];
 
 	const writeStream = createWriteStream(output);
-	// const time = dayjs().add(8, "h").format("YYYY-MM-DD HH:mm:ss.SSS");
+	const time = dayjs().add(8, "h").format("YYYY-MM-DD HH:mm:ss.SSS");
 
 	writeStream.write("/**\n");
-	// writeStream.write(` * Date       ${time}\n`);
+	writeStream.write(` * Date       ${time}\n`);
 	writeStream.write(` * Desc       model加载\n`);
 	writeStream.write(" */\n\n");
 
@@ -76,6 +80,7 @@ const load = (params?: modelConfigType) => {
 	});
 
 	writeStream?.close();
+	logger.Info("model 加载完成");
 };
 
 export default load;

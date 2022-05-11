@@ -3,7 +3,6 @@
  * Desc       文件监听
  */
 
-import path from "path";
 import chokiar from "chokidar";
 import { check } from "./check";
 import { debounce } from "../utils";

@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import * as path from "path";
+import fs from "fs";
+import path from "path";
 import { check } from "./check";
 import Logger from "@swallowj/logjs";
 import { fork } from "child_process";

@@ -1,5 +1,5 @@
-import * as path from "path";
-import * as crypto from "crypto";
+import path from "path";
+import crypto from "crypto";
 import { createWriteStream } from "../utils";
 
 const __HASHMAP = new Map<string, string>();

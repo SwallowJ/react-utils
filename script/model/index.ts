@@ -1,30 +1,16 @@
 import * as fs from "fs";
-import dayjs from "dayjs";
 import * as path from "path";
-import * as crypto from "crypto";
+import { check } from "./check";
 import Logger from "@swallowj/logjs";
+import { fork } from "child_process";
+import { outputModel } from "./output";
 import { modelConfigType } from "./typing";
-import { createWriteStream } from "../utils";
 
 const logger = Logger.New({ name: "model" });
 
 const defaultpath = (p: string) => path.resolve(process.cwd(), "src", p);
 
-const removeExt = (f: string) => f.replace(/\.[jt]sx?$/, "");
-
-const checkname = (f: string): string => {
-	for (const name of removeExt(f).split(path.sep).reverse()) {
-		if (name !== "model") {
-			return name;
-		}
-	}
-	return "";
-};
-
-const __Reg_Model = /(namespace)(\S|\s)*(state:)(\S|\s)*(effects:)(\S|\s)*(reducers:)(\S|\s)*(export default).*/;
-
-const test_model = (content: string) => __Reg_Model.test(content);
-
+/**扫描目录 */
 const __scanModel = (stack: string[], nameReg?: RegExp): string[] => {
 	logger.Info(`开始扫描目录列表: ${stack}`);
 	const res: string[] = [];
@@ -35,23 +21,20 @@ const __scanModel = (stack: string[], nameReg?: RegExp): string[] => {
 				const p = path.resolve(dir, f);
 
 				fs.statSync(p).isFile()
-					? (nameReg && !nameReg.test(f)) ||
-					  (/\.[jt]sx?$/.test(path.extname(f)) &&
-							test_model(fs.readFileSync(p, { encoding: "utf8" })) &&
-							res.push(p))
+					? (nameReg && !nameReg.test(f)) || (/\.[jt]sx?$/.test(path.extname(f)) && check(p) && res.push(p))
 					: stack.push(p);
 			});
 	}
 	return res;
 };
 
-/**  model加载 */
-const load = (params?: modelConfigType) => {
+const main = (params?: modelConfigType) => {
 	const {
 		watch = false,
 		pages = defaultpath("pages"),
-		output = defaultpath("models.ts"),
+		output = defaultpath("@/cli/models"),
 		customes = [defaultpath("models")],
+		namespace = "",
 	} = params || {};
 
 	if (!fs.statSync(pages).isDirectory()) {
@@ -64,23 +47,21 @@ const load = (params?: modelConfigType) => {
 		}
 	});
 
-	const models = [...__scanModel([pages], /model\.[tj]sx?$/), ...__scanModel(customes)];
+	const outPath = path.resolve(output, `${namespace}.ts`);
 
-	const writeStream = createWriteStream(output);
-	const time = dayjs().add(8, "h").format("YYYY-MM-DD HH:mm:ss.SSS");
+	const m1 = __scanModel([...customes]);
+	const m2 = __scanModel([pages], /model\.[tj]sx?$/);
+	const m = [...m1, ...m2];
+	outputModel(outPath, m);
 
-	writeStream.write("/**\n");
-	writeStream.write(` * Date       ${time}\n`);
-	writeStream.write(` * Desc       model加载\n`);
-	writeStream.write(" */\n\n");
+	if (watch) {
+		const childPath = path.resolve(__dirname, "listen.ts");
+		const listener = fork(childPath);
 
-	models.forEach((f) => {
-		const hash8 = crypto.createHash("sha256").update(f).copy().digest("hex").slice(0, 8);
-		writeStream.write(`export { default as ${checkname(f)}_${hash8} } from "${removeExt(f)}";\n`);
-	});
+		listener.send({ pages, customes, output: outPath, initArry: m });
+	}
 
-	writeStream?.close();
 	logger.Info("model 加载完成");
 };
 
-export default load;
+export default main;

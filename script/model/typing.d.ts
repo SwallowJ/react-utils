@@ -1,6 +1,7 @@
 import { Reducer, AnyAction } from "redux";
 
 export interface modelConfigType {
+	namespace?: string;
 	/**
 	 * 页面目录,
 	 * default=src/pages

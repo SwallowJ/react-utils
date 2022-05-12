@@ -1,6 +1,6 @@
 {
 	"name": "@swallowj/react-utils",
-	"version": "0.2.2",
+	"version": "0.2.4",
 	"author": "SwallowJ",
 	"license": "MIT",
 	"main": "src/index.min.js",

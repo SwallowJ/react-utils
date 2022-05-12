@@ -1,4 +1,7 @@
+const fs = require("fs");
 const path = require("path");
+
+fs.copyFileSync("script/index.d.ts", "dist/script/index.d.ts");
 
 const config = {
 	mode: "production",

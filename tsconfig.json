@@ -5,7 +5,7 @@
 		"jsx": "react",
 		"experimentalDecorators": true,
 		"target": "es6",
-		"module": "commonjs",
+		"module": "amd",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"baseUrl": ".",
 		"allowJs": false,

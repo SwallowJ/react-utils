@@ -19,7 +19,7 @@ module.exports = [
 		entry: "./script/index.ts",
 		output: {
 			path: path.resolve(__dirname, "script"),
-			filename: "index.min.js",
+			filename: "index.js",
 			library: { name: "react-utils-script", type: "umd" },
 		},
 		module: {

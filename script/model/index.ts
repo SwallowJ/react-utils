@@ -55,7 +55,7 @@ const main = (params?: modelConfigType) => {
 	outputModel(outPath, m);
 
 	if (watch) {
-		const childPath = path.resolve(__dirname, "listen.ts");
+		const childPath = path.resolve(__dirname, "listen");
 		const listener = fork(childPath);
 
 		listener.send({ pages, customes, output: outPath, initArry: m });

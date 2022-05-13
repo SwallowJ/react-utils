@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-fs.copyFileSync("script/index.d.ts", "dist/script/index.d.ts");
+fs.copyFileSync("script/index.d.ts", "lib/script/index.d.ts");
 
 const config = {
 	mode: "production",
@@ -21,7 +21,7 @@ const buildScript = (entry, filename) => ({
 	entry,
 	output: {
 		filename,
-		path: path.resolve(__dirname, "dist/script"),
+		path: path.resolve(__dirname, "lib/script"),
 		library: { name: "react-utils-script", type: "umd" },
 	},
 	module: {
@@ -37,29 +37,6 @@ const buildScript = (entry, filename) => ({
 	...config,
 });
 
-module.exports = [
-	// {
-	// 	target: "node",
-	// 	entry: "./script/index.ts",
-	// 	output: {
-	// 		path: path.resolve(__dirname, "script"),
-	// 		filename: "index.js",
-	// 		library: { name: "react-utils-script", type: "umd" },
-	// 	},
-	// 	module: {
-	// 		rules: [
-	// 			{
-	// 				test: /\.(js|mjs|jsx|ts|tsx)$/,
-	// 				include: path.resolve(__dirname, "script"),
-	// 				loader: "babel-loader",
-	// 			},
-	// 		],
-	// 	},
-	// 	externals,
-	// 	...config,
-	// },
-	buildScript("./script/index.ts", "index.js"),
-	buildScript("./script/model/listen.ts", "listen.js"),
-];
+module.exports = [buildScript("./script/index.ts", "index.js"), buildScript("./script/model/listen.ts", "listen.js")];
 
 module.exports.parallelism = 2;

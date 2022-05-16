@@ -6,10 +6,11 @@
 	"main": "src/index.min.js",
 	"module": "es/index.ts",
 	"dependencies": {
+		"@loadable/component": "^5.15.2",
 		"@swallowj/logjs": "^2.0.10",
+		"chokidar": "^3.5.3",
 		"dayjs": "^1.10.8",
-		"redux": "^4.1.2",
-		"chokidar": "^3.5.3"
+		"redux": "^4.1.2"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.17.5",

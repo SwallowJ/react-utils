@@ -52,29 +52,3 @@ interface EffectsCommandMap<S> {
 	 */
 	call<T = any>(p: Promise<T>): void;
 }
-
-export interface modelType<S = any> {
-	/**
-	 * 初始状态值
-	 */
-	state: S;
-	/**
-	 * 命名空间
-	 * 唯一标识
-	 */
-	namespace: string;
-
-	/**
-	 * 异步请求调用
-	 * 优先级低于reducers
-	 */
-	effects: effectCode<S>;
-
-	/**
-	 * reducer 函数
-	 * 调用路径: ${namespace}/function
-	 */
-	reducers: ReducersMapObject<S>;
-}
-
-export type resultType<T> = T | undefined;

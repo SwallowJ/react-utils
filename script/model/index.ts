@@ -34,7 +34,7 @@ const main = (params?: modelConfigType) => {
 		pages = defaultpath("pages"),
 		output = defaultpath("@/cli/models"),
 		customes = [defaultpath("models")],
-		namespace = "",
+		namespace = "index",
 	} = params || {};
 
 	if (!fs.statSync(pages).isDirectory()) {

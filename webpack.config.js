@@ -37,6 +37,10 @@ const buildScript = (entry, filename) => ({
 	...config,
 });
 
-module.exports = [buildScript("./script/index.ts", "index.js"), buildScript("./script/model/listen.ts", "listen.js")];
+module.exports = [
+	buildScript("./script/index.ts", "index.js"),
+	buildScript("./script/model/modellistener.ts", "modellistener.js"),
+	buildScript("./script/router/routerlistener.ts", "routerlistener.js"),
+];
 
 module.exports.parallelism = 2;

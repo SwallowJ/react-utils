@@ -11,7 +11,7 @@ const main = (params: routerConfigType) => {
 		throw new Error(`${routerPath} 不存在`);
 	}
 
-	const outPath = path.resolve(output, `${namespace}.tsx`);
+	const outPath = path.resolve(output, `router/${namespace}.tsx`);
 
 	const routers: RouterApi[] = require(routerPath).default;
 
@@ -20,7 +20,7 @@ const main = (params: routerConfigType) => {
 	outputRouter(config);
 
 	if (watch) {
-		const childPath = path.resolve(__dirname, "listen");
+		const childPath = path.resolve(__dirname, "routerlistener");
 		const listener = fork(childPath);
 
 		listener.send(config);

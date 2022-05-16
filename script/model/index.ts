@@ -47,7 +47,7 @@ const main = (params?: modelConfigType) => {
 		}
 	});
 
-	const outPath = path.resolve(output, `${namespace}.ts`);
+	const outPath = path.resolve(output, `model/${namespace}.ts`);
 
 	const m1 = __scanModel([...customes]);
 	const m2 = __scanModel([pages], /model\.[tj]sx?$/);
@@ -55,7 +55,7 @@ const main = (params?: modelConfigType) => {
 	outputModel(outPath, m);
 
 	if (watch) {
-		const childPath = path.resolve(__dirname, "listen");
+		const childPath = path.resolve(__dirname, "modellistener");
 		const listener = fork(childPath);
 
 		listener.send({ pages, customes, output: outPath, initArry: m });

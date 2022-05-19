@@ -1,10 +1,10 @@
 {
 	"name": "@swallowj/react-utils",
-	"version": "0.2.6",
+	"version": "1.0.0",
 	"author": "SwallowJ",
 	"license": "MIT",
-	"main": "src/index.min.js",
-	"module": "es/index.ts",
+	"main": "lib/index.js",
+	"module": "lib/index.js",
 	"dependencies": {
 		"@loadable/component": "^5.15.2",
 		"@swallowj/logjs": "^2.0.10",

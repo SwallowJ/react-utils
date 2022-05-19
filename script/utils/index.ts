@@ -8,15 +8,6 @@ export const createWriteStream = (filepath: string) => (
 	fs.createWriteStream(filepath)
 );
 
-export const writeTitle = (writeStream: fs.WriteStream, desc?: string) => {
-	const time = dayjs().add(8, "h").format("YYYY-MM-DD HH:mm:ss.SSS");
-
-	writeStream.write("/**\n");
-	writeStream.write(` * Date       ${time}\n`);
-	writeStream.write(` * Desc       ${desc}\n`);
-	writeStream.write(" */\n\n");
-};
-
 /**
  * 防抖函数
  * @param fn 要执行的函数

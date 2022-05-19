@@ -1,7 +1,8 @@
 import path from "path";
 import { WriteStream } from "fs";
+import { outType } from "../typing";
 import { createWriteStream } from "../utils";
-import { RouterApi, outType } from "./typing";
+import { RouterApi } from "../../src/router/typing";
 
 interface ObjectCode {
 	[key: string]: dataType;

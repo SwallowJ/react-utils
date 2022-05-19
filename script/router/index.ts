@@ -2,29 +2,32 @@ import fs from "fs";
 import path from "path";
 import { fork } from "child_process";
 import { outputRouter } from "./output";
-import { routerConfigType, RouterApi, outType } from "./typing";
+import dynamicImport from "./dynamicImport";
+import { RouterApi } from "../../src/router/typing";
+import { routerConfigType, outType } from "../typing";
 
 const main = (params: routerConfigType) => {
-	const { routerPath, namespace = "index", output, watch } = params;
+	const { routerPath, namespace = "", output, watch } = params;
 
 	if (!fs.statSync(routerPath).isFile()) {
 		throw new Error(`${routerPath} 不存在`);
 	}
 
-	const outPath = path.resolve(output, `router/${namespace}.tsx`);
+	const outPath = path.resolve(output, namespace, "routerConfig.tsx");
 
-	const routers: RouterApi[] = require(routerPath).default;
+	import("./dynamicImport").then((v) => {
+		const routers: RouterApi[] = v.default(routerPath);
 
-	const config: outType = { ...params, output: outPath, routers };
+		const config: outType = { ...params, output: outPath, routers };
+		outputRouter(config);
 
-	outputRouter(config);
+		if (watch) {
+			const childPath = path.resolve(__dirname, "routerlistener");
+			const listener = fork(childPath);
 
-	if (watch) {
-		const childPath = path.resolve(__dirname, "routerlistener");
-		const listener = fork(childPath);
-
-		listener.send(config);
-	}
+			listener.send(config);
+		}
+	});
 };
 
 export default main;

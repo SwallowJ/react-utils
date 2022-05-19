@@ -4,7 +4,7 @@ import { check } from "./check";
 import Logger from "@swallowj/logjs";
 import { fork } from "child_process";
 import { outputModel } from "./output";
-import { modelConfigType } from "./typing";
+import { modelConfigType } from "../typing";
 
 const logger = Logger.New({ name: "model" });
 
@@ -28,14 +28,14 @@ const __scanModel = (stack: string[], nameReg?: RegExp): string[] => {
 	return res;
 };
 
-const main = (params?: modelConfigType) => {
+const main = (params: modelConfigType) => {
 	const {
 		watch = false,
 		pages = defaultpath("pages"),
-		output = defaultpath("@/cli/models"),
+		output,
 		customes = [defaultpath("models")],
-		namespace = "index",
-	} = params || {};
+		namespace = "",
+	} = params;
 
 	if (!fs.statSync(pages).isDirectory()) {
 		throw new Error(`${pages} 不是一个目录`);
@@ -47,7 +47,7 @@ const main = (params?: modelConfigType) => {
 		}
 	});
 
-	const outPath = path.resolve(output, `model/${namespace}.ts`);
+	const outPath = path.resolve(output, namespace, "model.ts");
 
 	const m1 = __scanModel([...customes]);
 	const m2 = __scanModel([pages], /model\.[tj]sx?$/);

@@ -8,7 +8,7 @@ import { check } from "./check";
 import { debounce } from "../utils";
 import Logger from "@swallowj/logjs";
 import { outputModel } from "./output";
-import { modelConfigType } from "./typing";
+import { modelConfigType } from "../typing";
 
 let __OUTPATH: string = "";
 let __MODELS: string[] = [];
@@ -47,7 +47,7 @@ const onChange = (filename: string) => {
 		__timer && clearTimeout(__timer);
 		__timer = null;
 		__m.length = 0;
-	}, 5000);
+	}, 3000);
 };
 
 const listener = (dirs: string[] | string, ignored?: RegExp) => {

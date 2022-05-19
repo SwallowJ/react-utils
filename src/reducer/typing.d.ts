@@ -1,29 +1,5 @@
 import { Reducer, AnyAction } from "redux";
 
-export interface modelConfigType {
-	namespace?: string;
-	/**
-	 * 页面目录,
-	 * default=src/pages
-	 */
-	pages?: string;
-
-	/**
-	 * 自定义model目录、文件
-	 * default = [src/models]
-	 */
-	customes?: string[];
-
-	/**
-	 * 监听文件、目录变更
-	 * default=false
-	 */
-	watch?: boolean;
-
-	/**输出目录 */
-	output?: string;
-}
-
 export interface ReducersMapObject<S = any> {
 	[key: string]: Reducer<S>;
 }
@@ -52,3 +28,29 @@ interface EffectsCommandMap<S> {
 	 */
 	call<T = any>(p: Promise<T>): void;
 }
+
+export interface modelType<S = any> {
+	/**
+	 * 初始状态值
+	 */
+	state: S;
+	/**
+	 * 命名空间
+	 * 唯一标识
+	 */
+	namespace: string;
+
+	/**
+	 * 异步请求调用
+	 * 优先级低于reducers
+	 */
+	effects: effectCode<S>;
+
+	/**
+	 * reducer 函数
+	 * 调用路径: ${namespace}/function
+	 */
+	reducers: ReducersMapObject<S>;
+}
+
+export type resultType<T> = T | undefined;

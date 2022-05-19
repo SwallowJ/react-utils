@@ -1,28 +1,17 @@
 const fs = require("fs");
 const path = require("path");
 
-fs.copyFileSync("script/index.d.ts", "lib/script/index.d.ts");
-
-const config = {
-	mode: "production",
-	resolve: {
-		extensions: [".js", ".ts", ".tsx", ".json", ".d.ts"],
-	},
-	optimization: {
-		usedExports: true,
-	},
-};
-
-/**外部扩展 */
-const externals = ["dayjs", "@swallowj/logjs", "chokidar"].map((x) => ({ [x]: x }));
+fs.copyFileSync("script/typing.d.ts", "lib/index.d.ts");
 
 const buildScript = (entry, filename) => ({
-	target: "node",
 	entry,
+	target: "node",
+	mode: "production",
 	output: {
 		filename,
-		path: path.resolve(__dirname, "lib/script"),
+		path: path.resolve(__dirname, "lib"),
 		library: { name: "react-utils-script", type: "umd" },
+		chunkFilename: "dynamicImport.js",
 	},
 	module: {
 		rules: [
@@ -33,8 +22,9 @@ const buildScript = (entry, filename) => ({
 			},
 		],
 	},
-	externals,
-	...config,
+	externals: ["dayjs", "@swallowj/logjs", "chokidar"].map((x) => ({ [x]: x })),
+	resolve: { extensions: [".js", ".ts", ".tsx", ".json", ".d.ts"] },
+	optimization: { usedExports: true },
 });
 
 module.exports = [

@@ -2,8 +2,7 @@ import fs from "fs";
 import path from "path";
 import { fork } from "child_process";
 import { outputRouter } from "./output";
-import dynamicImport from "./dynamicImport";
-import { RouterApi } from "../../src/router/typing";
+import { RouterApi } from "../../src/namespace/router/typing";
 import { routerConfigType, outType } from "../typing";
 
 const main = (params: routerConfigType) => {

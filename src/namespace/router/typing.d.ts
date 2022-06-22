@@ -1,3 +1,9 @@
+interface ObjectCode {
+	[key: string]: dataType;
+}
+
+type dataType = ObjectCode | number | string | boolean | Array<dataType>;
+
 export interface RouterApi {
 	/** 路径 */
 	path: string;

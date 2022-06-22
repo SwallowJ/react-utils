@@ -2,7 +2,7 @@ import chokiar from "chokidar";
 import { outType } from "../typing";
 import { outputRouter } from "./output";
 import { debounce, isEqual } from "../utils";
-import { RouterApi } from "../../src/router/typing";
+import { RouterApi } from "../../src/namespace/router/typing";
 
 let __CONFIG: outType;
 let __ROUTERS: RouterApi[] = [];

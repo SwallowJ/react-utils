@@ -14,7 +14,9 @@ export class Actions<S = any> {
 	}
 
 	/**  调用effects */
-	callAction<T = any>(actionName: string, params?: T, namespace?: string): AnyAction {
-		return store.dispatch({ type: `${namespace ?? this.namespace}/${actionName}`, ...params });
+	callAction<T = any>(actionName: string, params?: T, namespace?: string): Promise<string> {
+		return new Promise((resolve) => {
+			store.dispatch({ type: `${namespace ?? this.namespace}/${actionName}`, onFinish: resolve, ...params });
+		});
 	}
 }

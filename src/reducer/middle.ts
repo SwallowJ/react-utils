@@ -8,12 +8,10 @@ import { AnyAction, Middleware } from "redux";
 export const effectMiddleware: Middleware =
 	({ getState }) =>
 	(next) => {
-		const callActions = (action: AnyAction) => {
+		const callActions = (action: AnyAction, init = true) => {
 			let [namespace, type] = (action.type as string).split("/");
 
-			/**
-			 * 获取model
-			 */
+			/** 获取model */
 			const model = models.find((m) => m.namespace == namespace);
 
 			if (!model) {
@@ -21,15 +19,24 @@ export const effectMiddleware: Middleware =
 			}
 
 			if (model.reducers.hasOwnProperty(type)) {
-				return next(action);
+				const res = next(action);
+				if (init && typeof action.onFinish === "function") {
+					action.onFinish(action.type);
+				}
+				return res;
 			} else if (model.effects.hasOwnProperty(type)) {
+				const finishGen = (nx: IteratorResult<void, void>) => {
+					nx.done && init && typeof action.onFinish === "function" && action.onFinish(action.type);
+					return nx;
+				};
+
 				/**
 				 * 异步函数调用
 				 * @param fn 异步函数
 				 * @param args 参数
 				 */
 				const call = <T>(p: Promise<T>) => {
-					p.then((v) => gen.next(v));
+					p.then((v) => finishGen(gen.next(v)));
 				};
 
 				/**
@@ -42,25 +49,19 @@ export const effectMiddleware: Middleware =
 							newAction.type = `${namespace}/${newAction.type}`;
 							callActions(newAction);
 						})
-						.then(() => {
-							return gen.next();
-						});
+						.then(() => finishGen(gen.next()));
 				};
 
 				const change = (params: any) => {
 					put({ type: "changeState", params });
 				};
 
-				/**
-				 * 获取当前State
-				 */
+				/** 获取当前State */
 				const select = (name = namespace) => getState()[name];
 
-				/**
-				 * effect 生成器
-				 */
+				/** effect 生成器 */
 				const gen = model.effects[type](action, { call, put, select, change });
-				gen.next();
+				finishGen(gen.next());
 			} else {
 				console.error(`No such action: ${action.type}`);
 			}
